@@ -5,7 +5,7 @@ LDFLAGS  = `sdl2-config --libs` -lm
 .SUFFIXES: .c .o
 
 srcdir	 =src/
-TARGETS	 = 1 2 3 4 5 6 7 8
+TARGETS	 = 1 2 3 4 5 5a 6 7 8
 
 .PHONY: all
 all: $(TARGETS)
@@ -23,6 +23,9 @@ all: $(TARGETS)
 	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
 
 5: $(srcdir)5.c
+	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
+
+5a: $(srcdir)5a.c
 	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
 
 6: $(srcdir)6.c
