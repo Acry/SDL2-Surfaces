@@ -21,9 +21,9 @@ Screenshots:
 ![Screenshot](./screenshot1.png)  
 ![Screenshot](./screenshot2.png)  
 ![Screenshot](./screenshot3.png)  
+![Screenshot](./screenshot5a.png)  
 ![Screenshot](./screenshot4.png)  
 ![Screenshot](./screenshot5.png)  
-![Screenshot](./screenshot5a.png)  
 ![Screenshot](./screenshot6.png)  
 
 [Get in touch on SDL-Discourse](https://discourse.libsdl.org/u/Acry/summary)
