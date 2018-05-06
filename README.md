@@ -1,4 +1,4 @@
-This is a set of 9 small introductory C-SDL programs.  
+This is a set of 10 small introductory C-SDL programs.  
 It's about the window, the window icon and surfaces.  
 And it shows why SDL_Renderer Infrastructure is so useful.  
 
