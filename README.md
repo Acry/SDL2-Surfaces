@@ -3,7 +3,8 @@ It's about the window, the window icon and surfaces.
 And it shows why SDL_Renderer Infrastructure is so useful.  
 
 * 1 - shows how to init Video/Events and create the first Window
-* 2 - initializes the screen
+* 2 - use window icon
+* 2a- use custom pointer
 * 3 - initializes the screen with the color we want
 * 4 - switches 2 colors time-based
 * 5 - draws a circle
@@ -19,6 +20,7 @@ Screenshots:
 
 ![Screenshot](./screenshot0.png)  
 ![Screenshot](./screenshot1.png)  
+![Screenshot](./screenshot2a.png)  
 ![Screenshot](./screenshot2.png)  
 ![Screenshot](./screenshot3.png)  
 ![Screenshot](./screenshot5a.png)  
