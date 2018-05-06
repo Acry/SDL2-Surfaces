@@ -3,14 +3,13 @@
 
 /* 
  * If you compile and run this you should see an
- * black initialized Window with icon.
+ * black initialized Window with icon and custom pointer.
  * 
  */
 
 /* DEFINED PROGRESS GOALS
  * 
- * TODO Inititalize Window
- * TODO Set Icon
+ * TODO custom pointer
  * 
  */
 //END   DESCRIPTION
