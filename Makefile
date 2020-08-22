@@ -1,11 +1,11 @@
-CFLAGS   = -Wall -Wextra -mtune=native `sdl2-config --cflags`
+CFLAGS   = -Wall -Wextra -mtune=native -no-pie `sdl2-config --cflags`
 LDFLAGS  = `sdl2-config --libs` -lm
 
 .SUFFIXES:
 .SUFFIXES: .c .o
 
 srcdir	 =src/
-TARGETS	 = 1 2 2a 3 4 5 5a 6 7 8
+TARGETS	 = 1 2 2a 3 4 5 5a 5b 6 7 7a 8
 
 .PHONY: all
 all: $(TARGETS)
@@ -31,10 +31,16 @@ all: $(TARGETS)
 5a: $(srcdir)5a.c
 	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
 
+5b: $(srcdir)5b.c
+	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
+
 6: $(srcdir)6.c
 	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
 
 7: $(srcdir)helper.c $(srcdir)7.c
+	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
+
+7a: $(srcdir)helper.c $(srcdir)7a.c
 	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
 
 8: $(srcdir)helper.c $(srcdir)8.c

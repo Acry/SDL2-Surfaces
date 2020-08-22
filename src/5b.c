@@ -104,9 +104,9 @@ while(running){
 	
 }
 //END   MAIN LOOP
-SDL_FreeSurface(logo);
-SDL_FreeSurface(screen);
-SDL_DestroyWindow(Window);
+SDL_FreeSurface		(logo);
+SDL_FreeSurface		(screen);
+SDL_DestroyWindow	(Window);
 SDL_Quit();
 
 return EXIT_SUCCESS;
@@ -123,7 +123,8 @@ SDL_Surface * flip_horizontal(SDL_Surface *sfc)
 	
 	// Pitch, absolute value, the number of bytes per bitmap line;
 	// it can be either positive or negative depending on the bitmap's vertical orientation
-	
+	// row_length is pitch / bytes_per_pixel
+
 	// To find a specific pixel in the padded image, you go like this:
 	// Pixel = (y   * pitch) + x;
 	// Pixel = (line*pitch ) +col

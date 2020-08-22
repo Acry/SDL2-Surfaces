@@ -17,7 +17,7 @@
 
 //BEGIN INCLUDES
 #include <stdlib.h>
-//on Linux we usually include SDL2 like this
+// on Linux we usually include SDL2 like this
 #include <SDL2/SDL.h>
 //END   INCLUDES
 
@@ -62,13 +62,13 @@ SDL_SetWindowTitle(Window, "SDL2 First Window");
 SDL_ShowWindow(Window);
 //END WINDOW
 
-//Don't bother about the events atm. We gonna get there
+// Don't bother about the events atm. We gonna get there
 SDL_Event event;
 
-//Setting the loop condition
+// Setting the loop condition
 int running=1;
 //END   INIT
-//starting loop that catches the quit event if you press the closing button
+// starting loop that catches the quit event if you press the closing button
 //BEGIN MAIN LOOP
 while(running){
 	//BEGIN EVENT LOOP
@@ -78,8 +78,8 @@ while(running){
 		}
 	}
 	//END   EVENT LOOP
-	//https://wiki.libsdl.org/SDL_Delay
-	//Use this function to wait a specified number of milliseconds before returning.
+	// https://wiki.libsdl.org/SDL_Delay
+	// Use this function to wait a specified number of milliseconds before returning.
 	SDL_Delay(16);
 	/* declared in SDL_timer.h
 	 * The point why I call this, is to give the CPU a little break.
@@ -88,16 +88,16 @@ while(running){
 	//END   RENDERING
 }
 //END   MAIN LOOP
-//Need to clean up before we exit
+// Need to clean up before we exit
 SDL_DestroyWindow(Window);
-//https://wiki.libsdl.org/SDL_DestroyWindow
+// https://wiki.libsdl.org/SDL_DestroyWindow
 
 // https://wiki.libsdl.org/SDL_Quit
 SDL_Quit();
-//Use this function to clean up all initialized subsystems.
+// Use this function to clean up all initialized subsystems.
 
-//Now we have a Window and we can close it.
-//That's pretty much about it. jump to the source code 2.c
+// Now we have a Window and we can close it.
+// That's pretty much about it. jump to the source code 2.c
 return EXIT_SUCCESS;
 
 }
