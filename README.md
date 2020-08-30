@@ -31,11 +31,17 @@ It's about the window, the window icon and surfaces.
 8 - animated gradient  
 ![](./screenshots/8.gif)
 
-9 - candy bar  
+9 - candy bar | press 's' for screenshot  
 ![](./screenshots/9.gif)
 
 10 - manually flip surface  
 ![](./screenshots/10.png)
+
+Creating a screenshot from a surface is as simple as:  
+
+```c
+SDL_SaveBMP(surface, "name.png");
+```
 
 ## Useful links
 

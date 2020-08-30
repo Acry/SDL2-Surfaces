@@ -52,6 +52,18 @@ int main( int argc, char* argv[] )
       if(event.type == SDL_QUIT){
         running=0;
       }
+      if (event.type == SDL_KEYDOWN) {
+        switch (event.key.keysym.sym) {
+          case SDLK_ESCAPE:
+              running =0;
+              break;
+          case SDLK_s:
+              SDL_SaveBMP(screen, "9_out.png");
+              break;
+          default:
+              break;
+        }
+      }
     }
 
     /* scroll bar */
