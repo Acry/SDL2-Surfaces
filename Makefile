@@ -4,47 +4,55 @@ LDFLAGS  = `sdl2-config --libs` -lm
 .SUFFIXES:
 .SUFFIXES: .c .o
 
-srcdir	 =src/
-TARGETS	 = 1 2 2a 3 4 5 5a 5b 6 7 7a 8
+srcdir	 = src/
+TARGETS	 = 0 1 2 3 4 5 6 7 8 9 10
 
 .PHONY: all
 all: $(TARGETS)
 
+# init & create
+0: $(srcdir)0.c
+	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
+
+# fill
 1: $(srcdir)1.c
 	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
 
+# set icon
 2: $(srcdir)2.c
 	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
 
-2a: $(srcdir)2a.c
+# refresh fill
+3: $(srcdir)helper.c $(srcdir)3.c
 	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
 
-3: $(srcdir)3.c
+# blit surface
+4: $(srcdir)helper.c $(srcdir)4.c
 	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
 
-4: $(srcdir)4.c
+# custom pointer
+5: $(srcdir)helper.c $(srcdir)5.c
 	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
 
-5: $(srcdir)5.c
+# fixed gradient
+6: $(srcdir)helper.c $(srcdir)6.c
 	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
 
-5a: $(srcdir)5a.c
-	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
-
-5b: $(srcdir)5b.c
-	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
-
-6: $(srcdir)6.c
-	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
-
+# refresh gradient
 7: $(srcdir)helper.c $(srcdir)7.c
 	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
 
-7a: $(srcdir)helper.c $(srcdir)7a.c
-	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
-
+# animated gradient
 8: $(srcdir)helper.c $(srcdir)8.c
 	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS) -lrt
+
+# candy bar
+9: $(srcdir)9.c
+	@cc $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+# manually flip surface
+10: $(srcdir)10.c
+	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
 
 .PHONY: clean
 clean:

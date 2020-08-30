@@ -1,7 +1,9 @@
-//BEGIN HEAD
-//BEGIN DESCRIPTION
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma region HEAD
+#pragma region DESCRIPTION
 
 /* DESCRIPTION
+ * flip surface
  * If you compile and run this you should see a
  * SDL Logo horizontal and vertical flipped the screen
  * like using SDL_RenderCopyEx with flags SDL_FLIP_VERTICAL|SDL_FLIP_HORIZONTAL
@@ -16,94 +18,94 @@
  * Implement vertical and horizontal flip functions for surfaces
  *
  */
-//END   DESCRIPTION
+#pragma endregion   DESCRIPTION
 
-//BEGIN INCLUDES
+#pragma region INCLUDES
 #include <stdlib.h>
 #include <SDL2/SDL.h>
-//END   INCLUDES
+#pragma endregion   INCLUDES
 
-//BEGIN CPP DEFINITIONS
+#pragma region CPP DEFINITIONS
 #define WHITE  255,255,255,255
-//END   CPP DEFINITIONS
+#pragma endregion   CPP DEFINITIONS
 
-//BEGIN DATASTRUCTURES
-//END	DATASTRUCTURES
+#pragma region DATASTRUCTURES
+#pragma endregion DATASTRUCTURES
 
-//BEGIN GLOBALS
+#pragma region GLOBALS
 SDL_Window   *Window;
 SDL_Surface  *screen;
 SDL_Surface  *logo;
-//BEGIN VISIBLES
-//END 	VISIBLES
+#pragma region VISIBLES
+#pragma endregion 	VISIBLES
 
-//END   GLOBALS
+#pragma endregion   GLOBALS
 
-//BEGIN FUNCTION PROTOTYPES
+#pragma region FUNCTION PROTOTYPES
 SDL_Surface * flip_vertical	(SDL_Surface *);
 SDL_Surface * flip_horizontal	(SDL_Surface *);
-//END	FUNCTION PROTOTYPES
+#pragma endregion FUNCTION PROTOTYPES
 
-//END 	HEAD
+#pragma endregion 	HEAD
 
-//BEGIN MAIN FUNCTION
+#pragma region MAIN FUNCTION
 int main(int argc, char *argv[])
 {
 (void)argc;
 (void)argv;
 
-//BEGIN INIT
+#pragma region INIT
 SDL_Init(SDL_INIT_VIDEO);
 
-//BEGIN WINDOW
+#pragma region WINDOW
 Window = SDL_CreateWindow("", 0, 0, 0, 0, SDL_WINDOW_HIDDEN);
-SDL_SetWindowPosition(Window,0,0);
+SDL_SetWindowPosition(Window,SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED);
 SDL_SetWindowSize(Window,179,99);
-SDL_SetWindowTitle(Window, "5b.c - flip");
+SDL_SetWindowTitle(Window, "Flip Surface");
 SDL_ShowWindow(Window);
 
-//BEGIN ICON
+#pragma region ICON
 SDL_Surface *icon;
 icon=SDL_LoadBMP("./assets/gfx/SDL2.bmp");
 
 SDL_SetWindowIcon(Window, icon);
 SDL_FreeSurface(icon);
-//END 	ICON
+#pragma endregion 	ICON
 
 screen = SDL_GetWindowSurface(Window);
 Uint32 white_pixel;
 white_pixel=SDL_MapRGBA(screen->format, WHITE);
 SDL_FillRect(screen, NULL, white_pixel);
-//END WINDOW
+#pragma endregion WINDOW
 
-//BEGIN LOGO
+#pragma region LOGO
 logo=SDL_LoadBMP("./assets/gfx/SDL_logo.bmp");
 logo=flip_vertical(logo);
 logo=flip_horizontal(logo);
 SDL_BlitSurface(logo,NULL,screen,NULL);
-//END 	LOGO
+#pragma endregion 	LOGO
 SDL_UpdateWindowSurface(Window);
 SDL_Event event;
 
 int running=1;
-//END   INIT
+#pragma endregion   INIT
 
-//BEGIN MAIN LOOP
+#pragma region MAIN LOOP
 while(running){
 
-	//BEGIN EVENT LOOP
+	#pragma region EVENT LOOP
 	while(SDL_PollEvent(&event)){
 		if(event.type == SDL_QUIT){
 			running=0;
 		}
 	}
-	//END   EVENT LOOP
+	#pragma endregion   EVENT LOOP
 	SDL_Delay(16);
-	//BEGIN RENDERING
-	//END   RENDERING
+	#pragma region RENDERING
+	#pragma endregion   RENDERING
 	
 }
-//END   MAIN LOOP
+#pragma endregion   MAIN LOOP
 SDL_FreeSurface		(logo);
 SDL_FreeSurface		(screen);
 SDL_DestroyWindow	(Window);
@@ -112,28 +114,12 @@ SDL_Quit();
 return EXIT_SUCCESS;
 
 }
-//END   MAIN FUNCTION
+#pragma endregion   MAIN FUNCTION
 
-//BEGIN FUNCTIONS
+#pragma region FUNCTIONS
 SDL_Surface * flip_horizontal(SDL_Surface *sfc)
 {
-	// What is pitch and stride?
-	// Stride means bytes in a row of pixels including any padding.
-	// Pitch should be a synonym.
-	
-	// Pitch, absolute value, the number of bytes per bitmap line;
-	// it can be either positive or negative depending on the bitmap's vertical orientation
-	// row_length is pitch / bytes_per_pixel
 
-	// To find a specific pixel in the padded image, you go like this:
-	// Pixel = (y   * pitch) + x;
-	// Pixel = (line*pitch ) +col
-
-	// 	SDL_PixelFormat *format;    Read-only
-	// 	int w, h;                   Read-only
-	// 	int pitch;                  Read-only, the length of a row of pixels in bytes
-	// 	void *pixels;               Read-write
-	
 	SDL_Surface *result= SDL_CreateRGBSurfaceWithFormat(0,sfc->w,sfc->h, sfc->format->BytesPerPixel, sfc->format->format);
 	size_t pitch 	= sfc->pitch;
 	int pxlength 	= pitch*sfc->h;
@@ -152,6 +138,7 @@ SDL_Surface * flip_horizontal(SDL_Surface *sfc)
 
 SDL_Surface * flip_vertical(SDL_Surface *sfc)
 {
+
 	SDL_Surface *result= SDL_CreateRGBSurfaceWithFormat(0,sfc->w,sfc->h, sfc->format->BytesPerPixel, sfc->format->format);
 	
 	int pitch 	= sfc->pitch;
@@ -171,4 +158,4 @@ SDL_Surface * flip_vertical(SDL_Surface *sfc)
 	return result;
 	
 }
-//END   FUNCTIONS
+#pragma endregion   FUNCTIONS

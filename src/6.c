@@ -1,147 +1,82 @@
-//BEGIN HEAD
-//BEGIN DESCRIPTION
 
-/* DESCRIPTION
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+
+#pragma region HEAD
+/* Gradient
  * If you compile and run this you should see an RGB-
  * gradient of Pixels on the screen
  *
  */
 
-/* DEFINED PROGRESS GOALS
- * 
- * TODO implement nested for loop changing RGB Values
- * 
- */
-//END   DESCRIPTION
+#include "helper.h"
 
-//BEGIN INCLUDES
-#include <stdlib.h>
-#include <SDL2/SDL.h>
-//END   INCLUDES
+void drawGradient(void);
 
-//BEGIN CPP DEFINITIONS
-//END   CPP DEFINITIONS
-
-//BEGIN DATASTRUCTURES
-//END	DATASTRUCTURES
-
-//BEGIN GLOBALS
-SDL_Window   *Window;
-SDL_Surface  *screen;
-//BEGIN VISIBLES
-//END 	VISIBLES
-
-//END   GLOBALS
-
-//BEGIN FUNCTION PROTOTYPES
-void putpixel(SDL_Surface *surface, int, int, Uint32);
-//END	FUNCTION PROTOTYPES
-
-//END 	HEAD
-
-//BEGIN MAIN FUNCTION
 int main(int argc, char *argv[])
 {
 (void)argc;
 (void)argv;
 
-//BEGIN INIT
-SDL_Init(SDL_INIT_VIDEO);
+init();
 
-//BEGIN WINDOW
-Window = SDL_CreateWindow("", 0, 0, 0, 0, SDL_WINDOW_HIDDEN);
-SDL_SetWindowPosition(Window,0,0);
 SDL_SetWindowSize(Window,256,256);
-SDL_SetWindowTitle(Window, "linear gradient");
-SDL_ShowWindow(Window);
-
-//BEGIN ICON
-SDL_Surface *icon;
-icon=SDL_LoadBMP("./assets/gfx/SDL2.bmp");
-SDL_SetWindowIcon(Window, icon);
-SDL_FreeSurface(icon);
-//END 	ICON
+SDL_SetWindowTitle(Window, "fixed gradient");
+SDL_SetWindowResizable(Window, SDL_FALSE);
+SDL_SetWindowPosition(Window,SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED);
 
 screen = SDL_GetWindowSurface(Window);
-//END WINDOW
+pitch = SDL_CalculatePitch(screen->format, screen->w);
 
-//BEGIN GRADIENT
-Uint32 color=0;
-for (int i=0; i <screen->w; i++){
-	for (int j=0; j <screen->h; j++){
-		color=SDL_MapRGBA(screen->format, i, 255-j, 255-i, 255);
-		putpixel(screen,i,j,color);
-	}
-	
-}
-//END GRADIENT
+drawGradient();
 SDL_UpdateWindowSurface(Window);
 SDL_Event event;
 
-int running=1;
-//END   INIT
+int running = 1;
 
-//BEGIN MAIN LOOP
 while(running){
 
-	//BEGIN EVENT LOOP
 	while(SDL_PollEvent(&event)){
 		if(event.type == SDL_QUIT){
-			running=0;
+			running = 0;
+		}
+		if(event.type == SDL_WINDOWEVENT){
+			if (event.window.event == SDL_WINDOWEVENT_RESIZED){
+				SDL_Log("Resize Event");
+				SDL_Log("x %d",event.window.data1);
+				SDL_Log("y %d",event.window.data2);
+				screen = SDL_GetWindowSurface(Window);
+				pitch = SDL_CalculatePitch(screen->format, screen->w);
+				SDL_Log("pitch: %d", pitch);
+				int bpp = screen->format->BytesPerPixel;
+				SDL_Log("bpp: %d", bpp);
+				int formatPitch = screen->pitch;
+				SDL_Log("formatPitch: %d", formatPitch);
+			}
 		}
 	}
-	//END   EVENT LOOP
+	
+
 	SDL_Delay(16);
-	//BEGIN RENDERING
-	//END   RENDERING
-	
 }
-//END   MAIN LOOP
 
-SDL_FreeSurface(screen);
-SDL_DestroyWindow(Window);
-SDL_Quit();
-
+exit_();
 return EXIT_SUCCESS;
-
 }
-//END   MAIN FUNCTION
 
-//BEGIN FUNCTIONS
-void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
-{
-	/* Code from 
-	 * http://sdl.beuc.net/sdl.wiki/Pixel_Access
-	 */
-	
-	int bpp = surface->format->BytesPerPixel;
-	/* Here p is the address to the pixel we want to set */
-	Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
-	
-	switch(bpp) {
-		case 1:
-			*p = pixel;
-			break;
-			
-		case 2:
-			*(Uint16 *)p = pixel;
-			break;
-			
-		case 3:
-			if(SDL_BYTEORDER == SDL_BIG_ENDIAN) {
-				p[0] = (pixel >> 16) & 0xff;
-				p[1] = (pixel >> 8) & 0xff;
-				p[2] = pixel & 0xff;
-			} else {
-				p[0] = pixel & 0xff;
-				p[1] = (pixel >> 8) & 0xff;
-				p[2] = (pixel >> 16) & 0xff;
-			}
-			break;
-			
-		case 4:
-			*(Uint32 *)p = pixel;
-			break;
+
+
+void drawGradient(void){
+	unsigned int *ptr = (unsigned int*)screen->pixels;
+
+	for (int x=0; x <screen->w; x++){
+		for (int y=0; y <screen->h; y++){
+			ptr[y * pitch + x] = SDL_MapRGBA(screen->format, x, 255-y, 255-x, 255);
+		}
 	}
 }
-//END   FUNCTIONS
+
+
+
+
+
+

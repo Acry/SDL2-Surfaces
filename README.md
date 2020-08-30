@@ -1,33 +1,61 @@
-This is a set of 10 small introductory C-SDL programs.  
+# SDL2-C Surfaces
+
+A set of small introductory programs.  
+
 It's about the window, the window icon and surfaces.  
-And it shows why SDL_Renderer Infrastructure is so useful.  
 
-* 1 - shows how to init Video/Events and create the first Window
-* 2 - use window icon
-* 2a- use custom pointer
-* 3 - initializes the screen with the color we want
-* 4 - switches 2 colors time-based
-* 5 - draws a circle
-* 5a- uses [SDL_BlitSurface](https://wiki.libsdl.org/SDL_BlitSurface) to show SDL Logo.  
-* 5b- flipping surfaces with own functions  
-* 6 - draws an RGB gradient
-* 7 - draws an RGB gradient on a resizeable window
-* 8 - animates the gradient time-based and function timing is done to see why we want the SDL_Renderer  
+0 - init video, events and create Window  
+![](./screenshots/0.png)
 
-Useful links:  
-[SDL2](https://www.libsdl.org/) [SDL-Discourse](https://discourse.libsdl.org) [More Example Code](https://gist.github.com/Acry/baa861b8e370c6eddbb18519c487d9d8)
+1 - fill window with color  
+![](./screenshots/1.png)
 
-Screenshots:  
+2 - set icon  
+![](./screenshots/2.png)
 
-![Screenshot1](./screenshot0.png)  
-![Screenshot2](./screenshot1.png)  
-![Screenshot3](./screenshot2a.png)  
-![Screenshot4](./screenshot2.png)  
-![Screenshot5](./screenshot3.png)  
-![Screenshot6](./screenshot5a.png)  
-![Screenshot7](./screenshot5b.png)  
-![Screenshot8](./screenshot4.png)  
-![Screenshot9](./screenshot5.png)  
-![Screenshot10](./screenshot6.png)  
+3 - refresh fill  
+![](./screenshots/3.gif)
 
-[Get in touch on SDL-Discourse](https://discourse.libsdl.org/u/Acry/summary)
+4 - blit surface  
+![](./screenshots/4.png)
+
+5 - custom pointer  
+![](./screenshots/5.gif)
+
+6 - fixed gradient  
+![](./screenshots/6.png)
+
+7 - refresh gradient  
+![](./screenshots/7.gif)
+
+8 - animated gradient  
+![](./screenshots/8.gif)
+
+9 - candy bar  
+![](./screenshots/9.gif)
+
+10 - manually flip surface  
+![](./screenshots/10.png)
+
+## Useful links
+
+[SDL2](https://www.libsdl.org/) | [SDL-Discourse](https://discourse.libsdl.org) | [My Example Code](https://acry.github.io/SDL2-C.html)
+
+<http://demo-effects.sourceforge.net/>
+
+## Contact
+[Get in touch](https://acry.github.io/#contact)
+
+## Building
+
+`make` - builds all  
+`make $target` - builds target  
+`make -j $(nproc)`  uses all cores to build faster  
+
+## Notes
+
+Pushing around bytes per pixel, casting pointers this way, is not a good practice to write cross platform code.
+
+Here the size of `unsigned int` is 4 bytes which aligns with the bytes per pixel on my machine.
+
+This stuff is pretty low level and flipping bits on software surfaces is insane nowadays, but this is in preparation to my 'Pixel-Access' series, which is in turn a preparation for my 'GLSL for C-Coders' series.

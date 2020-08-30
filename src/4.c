@@ -1,122 +1,73 @@
-//BEGIN HEAD
-//BEGIN DESCRIPTION
-
-/* DESCRIPTION
- * If you compile and run this you should see an
- * red initialized Window with icon.
- * The Window switches it's colors between
- * red and blue every second.
- * 
- * Using defines for colors and SDL_GetTicks
+/* Blit bmp image
+ *
+ * If you compile and run this you should see a
+ * the SDL Logo on the screen
+ *
  */
+#include "helper.h"
 
-/* DEFINED PROGRESS GOALS
- * 
- * TODO create a blue color to pass into SDL_FillRect
- * TODO create a timer to switch colors
- * 
- */
-//END   DESCRIPTION
-
-//BEGIN INCLUDES
-#include <stdlib.h>
-#include <SDL2/SDL.h>
-//END   INCLUDES
-
-//BEGIN CPP DEFINITIONS
-#define BLUE 0,0,255,255
-#define RED  255,0,0,255
-//END   CPP DEFINITIONS
-
-//BEGIN DATASTRUCTURES
-//END	DATASTRUCTURES
-
-//BEGIN GLOBALS
-SDL_Window   *Window;
-SDL_Surface  *screen;
-//BEGIN VISIBLES
-//END 	VISIBLES
-
-//END   GLOBALS
-
-//BEGIN FUNCTION PROTOTYPES
-//END	FUNCTION PROTOTYPES
-
-//END 	HEAD
-
-//BEGIN MAIN FUNCTION
 int main(int argc, char *argv[])
 {
 (void)argc;
 (void)argv;
 
-//BEGIN INIT
-SDL_Init(SDL_INIT_VIDEO);
+init();
 
-//BEGIN WINDOW
-Window = SDL_CreateWindow("", 0, 0, 0, 0, SDL_WINDOW_HIDDEN);
-SDL_SetWindowPosition(Window,0,0);
-SDL_SetWindowSize(Window,800/2,600/2);
-SDL_SetWindowTitle(Window, "SDL2 fourth Window");
-SDL_ShowWindow(Window);
+SDL_SetWindowSize(Window,200,200);
+SDL_SetWindowTitle(Window, "Blit image");
+SDL_SetWindowPosition(Window,SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED);
+screen=SDL_GetWindowSurface(Window);
+// clear background
+Uint32 color = SDL_MapRGB(screen->format, 153, 142, 174);
+SDL_FillRect(screen, NULL, color);
 
-//BEGIN ICON
-SDL_Surface *icon;
-icon=SDL_LoadBMP("./assets/gfx/SDL2.bmp");
-SDL_SetWindowIcon(Window, icon);
-SDL_FreeSurface(icon);
-//END 	ICON
-screen = SDL_GetWindowSurface(Window);
-Uint32 red_pixel;
-red_pixel=SDL_MapRGBA(screen->format, RED);
-Uint32 blue_pixel;
-blue_pixel=SDL_MapRGBA(screen->format, BLUE);
-//END WINDOW
+SDL_Surface  *logo;
+logo = SDL_LoadBMP("./assets/gfx/SDL_logo.bmp");
+
+SDL_Rect logo_destRect = {0, 0, logo->w,logo->h};
+
+/*
+ *  SDL_BlitSurface
+ * 
+ *  From SDL_surface.h
+ *  You should call SDL_BlitSurface unless you know exactly how SDL
+ *  blitting works internally and how to use the other blit functions.
+ *
+ *  #define SDL_BlitSurface SDL_UpperBlit
+ *
+ *  This is the public blit function, SDL_BlitSurface, and it performs
+ *  rectangle validation and clipping before passing it to SDL_LowerBlit
+ *
+ *  extern DECLSPEC int SDLCALL SDL_UpperBlit
+ *  (SDL_Surface * src, const SDL_Rect * srcrect,
+ *   SDL_Surface * dst, SDL_Rect * dstrect);
+ */
+
+SDL_BlitSurface(logo,NULL,screen,&logo_destRect);
+SDL_UpdateWindowSurface(Window);
 
 SDL_Event event;
-Uint32 loop_start = 0;
-Uint32 loop_end   = 0;
-Uint32 loop_time  = 0;
-Uint32 track_time = 0;
 int running=1;
-//END   INIT
-
-//BEGIN MAIN LOOP
 while(running){
-	loop_start=SDL_GetTicks();
-	//BEGIN EVENT LOOP
 	while(SDL_PollEvent(&event)){
 		if(event.type == SDL_QUIT){
 			running=0;
 		}
+		if(event.type == SDL_WINDOWEVENT){
+			if (event.window.event == SDL_WINDOWEVENT_RESIZED){
+				screen=SDL_GetWindowSurface(Window);
+				SDL_FillRect(screen, NULL, color);
+				SDL_BlitSurface(logo,NULL,screen,&logo_destRect);
+				SDL_UpdateWindowSurface(Window);
+			}
+		}
 	}
-	//END   EVENT LOOP
 	SDL_Delay(16);
-	//BEGIN RENDERING
-	if (track_time<=1000)
-		SDL_FillRect(screen, NULL, red_pixel);
-	else
-		SDL_FillRect(screen, NULL, blue_pixel);
 
-	SDL_UpdateWindowSurface(Window);
-	//END   RENDERING
-	loop_end=SDL_GetTicks();
-	loop_time=loop_end-loop_start;
-	track_time+=loop_time;
-	if (track_time>2000)
-		track_time=0;
 	
 }
-//END   MAIN LOOP
-
-SDL_FreeSurface(screen);
-SDL_DestroyWindow(Window);
-SDL_Quit();
-
+SDL_FreeSurface(logo);
+exit_();
 return EXIT_SUCCESS;
 
 }
-//END   MAIN FUNCTION
-
-//BEGIN FUNCTIONS
-//END   FUNCTIONS

@@ -1,5 +1,6 @@
-//BEGIN HEAD
-//BEGIN DESCRIPTION
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma region HEAD
+#pragma region DESCRIPTION
 
 /* DESCRIPTION
  * If you compile and run this you should see an RGB-
@@ -18,27 +19,27 @@
  */
 
 /* DEFINED PROGRESS GOALS
- * TODO include a timer
- * TODO make it pausable
+ * include a timer
+ * make it pausable
  * TODO profile the function
- * TODO since I use clock_gettime anyways I use it for Loop
+ * since I use clock_gettime anyways I use it for Loop
  *      Timing.
  */
 
 
-//END   DESCRIPTION
+#pragma endregion   DESCRIPTION
 
-//BEGIN INCLUDES
+#pragma region INCLUDES
 #include "helper.h"
 #include <time.h>
-//END   INCLUDES
+#pragma endregion   INCLUDES
 
-//BEGIN CPP DEFINITIONS
+#pragma region CPP DEFINITIONS
 #define WW 256
 #define WH 256
-//END   CPP DEFINITIONS
+#pragma endregion   CPP DEFINITIONS
 
-//BEGIN DATASTRUCTURES
+#pragma region DATASTRUCTURES
 struct vec4{
 	float r;
 	float g;
@@ -55,36 +56,40 @@ struct pixels{
 	struct vec4 color;
 	struct vec2 pos;
 };
-//END	DATASTRUCTURES
+#pragma endregion DATASTRUCTURES
 
-//BEGIN GLOBALS
+#pragma region GLOBALS
 int ww=WW;
 int wh=WH;
 struct pixels *pix_map = NULL;
 
 float fTime=0;
 SDL_bool paused	 = SDL_FALSE;
+#pragma endregion   GLOBALS
 
-//BEGIN VISIBLES
-//END 	VISIBLES
-
-//END   GLOBALS
-
-//BEGIN FUNCTION PROTOTYPES
-void putpixel(SDL_Surface *surface, int, int, Uint32);
+#pragma region FUNCTION PROTOTYPES
 void update_screen(void);
 struct timespec diff(struct timespec start, struct timespec end);
-//END	FUNCTION PROTOTYPES
+#pragma endregion FUNCTION PROTOTYPES
 
-//END 	HEAD
+#pragma endregion 	HEAD
 
-//BEGIN MAIN FUNCTION
+#pragma region MAIN FUNCTION
 int main(int argc, char *argv[])
 {
 (void)argc;
 (void)argv;
 
 init();
+SDL_SetWindowSize(Window,256,256);
+SDL_SetWindowTitle(Window, "Animated Gradient");
+SDL_SetWindowPosition(Window,SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED);
+
+screen = SDL_GetWindowSurface(Window);
+SDL_FillRect(screen, NULL, 0);
+update_screen();
+SDL_UpdateWindowSurface(Window);
+
 Uint32 loop_start = 0;
 Uint32 loop_end   = 0;
 Uint32 loop_time  = 0;
@@ -96,12 +101,12 @@ wait.tv_nsec = 33333333L;
 //33,000,000 Nanoseconds
 SDL_Event event;
 int running=1;
-
-//BEGIN MAIN LOOP
+// update_screen();
+#pragma region MAIN LOOP
 while(running){
 	clock_gettime(CLOCK_REALTIME, &start_loop);
 	loop_start=SDL_GetTicks();
-	//BEGIN EVENT LOOP
+	#pragma region EVENT LOOP
 	while(SDL_PollEvent(&event)){
 		if(event.type == SDL_QUIT){
 			running=0;
@@ -123,9 +128,9 @@ while(running){
 		}
 	}
 	
-	//END   EVENT LOOP
+	#pragma endregion   EVENT LOOP
 
-	//BEGIN RENDERING
+	#pragma region RENDERING
 	if (!paused){
 		clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
 		update_screen();
@@ -133,7 +138,7 @@ while(running){
 		temp=diff(start,stop);
 		SDL_Log("FT: %.2f ms", (float)temp.tv_nsec/1000000 );
 	}
-	//END   RENDERING
+	#pragma endregion   RENDERING
 	loop_end=SDL_GetTicks();
 	loop_time=loop_end-loop_start;
 	fTime+=(float)loop_time/1000;
@@ -146,61 +151,28 @@ while(running){
 	if (temp.tv_nsec<wait.tv_nsec)
 		while (nanosleep(&temp, &temp)); //TODO handle interrupts
 	else
-		SDL_Log("Oh no, we don't even get 30 FPS!");
+		// SDL_Log("Oh no, we don't even get 30 FPS!");
 
 	clock_gettime(CLOCK_REALTIME, &stop_loop);
 	temp=diff(start_loop,stop_loop);
 // 	SDL_Log("LT af wait: %ld", temp.tv_nsec );
 }
-//END   MAIN LOOP
+#pragma endregion   MAIN LOOP
 
 free(pix_map);
 exit_();
 return EXIT_SUCCESS;
 
 }
-//END   MAIN FUNCTION
+#pragma endregion   MAIN FUNCTION
 
-//BEGIN FUNCTIONS
-void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
-{
-	int bpp = surface->format->BytesPerPixel;
-	/* Here p is the address to the pixel we want to set */
-	Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
-	
-	switch(bpp) {
-		case 1:
-			*p = pixel;
-			break;
-			
-		case 2:
-			*(Uint16 *)p = pixel;
-			break;
-			
-		case 3:
-			if(SDL_BYTEORDER == SDL_BIG_ENDIAN) {
-				p[0] = (pixel >> 16) & 0xff;
-				p[1] = (pixel >> 8) & 0xff;
-				p[2] = pixel & 0xff;
-			} else {
-				p[0] = pixel & 0xff;
-				p[1] = (pixel >> 8) & 0xff;
-				p[2] = (pixel >> 16) & 0xff;
-			}
-			break;
-			
-		case 4:
-			*(Uint32 *)p = pixel;
-			break;
-	}
-}
-
+#pragma region FUNCTIONS
 void update_screen(void)
 {
 	screen = SDL_GetWindowSurface(Window);
 	pix_map = realloc(pix_map, ww*wh * (sizeof *pix_map));
 
-	//BEGIN GRADIENT
+	#pragma region GRADIENT
 	int x=0;
 	int y=0;
 	//Set Pixel positions and colors like on https://www.shadertoy.com/new
@@ -218,15 +190,17 @@ void update_screen(void)
 			y++;
 		}
 	}
-
-
 	//map pixels on the surface
-	Uint32 color=0;
+	Uint32 color;
 	for (int i=0;i<ww*wh;i++){
 		color=SDL_MapRGBA(screen->format,(int)(pix_map[i].color.r*255), (int)(pix_map[i].color.g*255), (int)(pix_map[i].color.b*255), (int)(pix_map[i].color.a*255));
-		putpixel(screen, roundf( pix_map[i].pos.x * ((float)ww-1.0) ), roundf( pix_map[i].pos.y * ((float)wh-1.0) ), color);
+		unsigned int *ptr = screen->pixels;
+		int x = roundf( pix_map[i].pos.x * ((float)ww-1.0) );
+		int y = roundf( pix_map[i].pos.y * ((float)wh-1.0) );
+		int row = y * (screen->pitch / screen->format->BytesPerPixel);
+		ptr[row + x] = color;
 	}
-	//END GRADIENT
+	#pragma endregion GRADIENT
 	SDL_UpdateWindowSurface(Window);
 }
 
@@ -242,4 +216,4 @@ struct timespec diff(struct timespec start, struct timespec end)
 	}
 	return temp;
 }
-//END   FUNCTIONS
+#pragma endregion   FUNCTIONS
