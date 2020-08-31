@@ -37,6 +37,9 @@ It's about the window, the window icon and surfaces.
 10 - manually flip surface  
 ![](./screenshots/10.png)
 
+11 - copper bars | press 's' for screenshot  
+![](./screenshots/11.gif)
+
 Creating a screenshot from a surface is as simple as:  
 
 ```c

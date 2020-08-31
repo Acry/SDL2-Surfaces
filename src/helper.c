@@ -24,7 +24,6 @@ void init(void)
 
 void exit_(void)
 {
-	SDL_FreeSurface(screen);
 	SDL_DestroyWindow(Window);
 	SDL_Quit();
 }

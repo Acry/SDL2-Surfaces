@@ -5,7 +5,7 @@ LDFLAGS  = `sdl2-config --libs` -lm
 .SUFFIXES: .c .o
 
 srcdir	 = src/
-TARGETS	 = 0 1 2 3 4 5 6 7 8 9 10
+TARGETS	 = 0 1 2 3 4 5 6 7 8 9 10 11
 
 .PHONY: all
 all: $(TARGETS)
@@ -53,6 +53,10 @@ all: $(TARGETS)
 # manually flip surface
 10: $(srcdir)10.c
 	$(CC) $(CFLAGS) -o $@ $+ $(LDFLAGS)
+
+# copper bars
+11: $(srcdir)11.c
+	@cc $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 .PHONY: clean
 clean:
